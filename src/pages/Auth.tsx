@@ -109,7 +109,7 @@ const Auth = () => {
             </Button>
           </div>
           <div className="mt-6 pt-6 border-t border-border text-center">
-            <p className="text-muted-foreground text-xl">Powered by Tyger</p>
+            <p className="text-muted-foreground text-base">Powered by Tyger</p>
           </div>
         </CardContent>
       </Card>
