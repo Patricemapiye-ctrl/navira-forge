@@ -57,6 +57,13 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        hardware: {
+          steel: "hsl(var(--hardware-steel))",
+          metal: "hsl(var(--hardware-metal))",
+          orange: "hsl(var(--hardware-orange))",
+          yellow: "hsl(var(--hardware-yellow))",
+          dark: "hsl(var(--hardware-dark))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
