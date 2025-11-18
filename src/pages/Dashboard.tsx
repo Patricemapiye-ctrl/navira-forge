@@ -1,94 +1,91 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { User, Session } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogOut, Wrench, Package, ShoppingCart, Users } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import InventoryManagement from "@/components/InventoryManagement";
-import SalesPoint from "@/components/SalesPoint";
-import UserManagement from "@/components/UserManagement";
+import { Wrench, LogOut, Package, ShoppingCart, Users, Clock } from "lucide-react";
 
 const Dashboard = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [userRole, setUserRole] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (!session) {
-          navigate("/auth");
-        }
-      }
-    );
+    checkAuth();
+    
+    // Update time every second
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (!session) {
-        navigate("/auth");
-      }
-    });
+    return () => clearInterval(timer);
+  }, []);
 
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+  const checkAuth = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+      navigate("/auth");
+      return;
+    }
 
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      if (!user) return;
+    const { data: roleData } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", session.user.id)
+      .single();
 
-      const { data } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", user.id)
-        .single();
-
-      setUserRole(data?.role || null);
-    };
-
-    fetchUserRole();
-  }, [user]);
+    setUserRole(roleData?.role || null);
+  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    toast({
-      title: "Logged out",
-      description: "You have been successfully logged out.",
-    });
     navigate("/auth");
   };
 
-  if (!user) return null;
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+  };
+
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-secondary">
-      <header className="bg-hardware-dark border-b-4 border-primary shadow-lg">
+    <div className="min-h-screen bg-gradient-to-br from-hardware-dark via-hardware-steel to-hardware-metal">
+      <header className="bg-hardware-dark/90 backdrop-blur-sm border-b-2 border-primary shadow-lg sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Wrench className="h-8 w-8 text-primary" />
             <div>
-              <h1 className="text-2xl font-bold text-primary">NAVIRA HARDWARE</h1>
-              <p className="text-xs text-muted-foreground">Hardware Management System</p>
+              <h1 className="text-2xl font-bold text-white">NAVIRA HARDWARE</h1>
+              <p className="text-sm text-hardware-light">Professional Management System</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             <div className="text-right">
-              <p className="text-sm text-sidebar-foreground">{user.email}</p>
-              <p className="text-xs text-primary font-semibold uppercase">
-                {userRole || "Loading..."}
-              </p>
+              <div className="flex items-center gap-2 text-primary font-mono text-2xl font-bold">
+                <Clock className="h-6 w-6" />
+                {formatTime(currentTime)}
+              </div>
+              <p className="text-sm text-hardware-light">{formatDate(currentTime)}</p>
             </div>
             <Button
-              variant="outline"
-              size="sm"
               onClick={handleLogout}
-              className="border-primary/30 hover:bg-primary hover:text-primary-foreground"
+              variant="outline"
+              className="border-primary text-primary hover:bg-primary hover:text-white"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Logout
@@ -98,38 +95,59 @@ const Dashboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        <Tabs defaultValue="inventory" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8 bg-card border-2 border-hardware-steel/20">
-            <TabsTrigger value="inventory" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              <Package className="h-4 w-4 mr-2" />
-              Inventory
-            </TabsTrigger>
-            <TabsTrigger value="sales" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              <ShoppingCart className="h-4 w-4 mr-2" />
-              Point of Sale
-            </TabsTrigger>
-            {userRole === "ceo" && (
-              <TabsTrigger value="users" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <Users className="h-4 w-4 mr-2" />
-                Users
-              </TabsTrigger>
-            )}
-          </TabsList>
+        <div className="mb-8 text-center">
+          <h2 className="text-3xl font-bold text-white mb-2">Welcome to the Dashboard</h2>
+          <p className="text-hardware-light">Select a module to get started</p>
+        </div>
 
-          <TabsContent value="inventory">
-            <InventoryManagement userRole={userRole} />
-          </TabsContent>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <Card 
+            className="border-2 border-hardware-steel/20 bg-hardware-dark/30 backdrop-blur-sm hover:border-primary transition-all cursor-pointer group"
+            onClick={() => navigate("/inventory")}
+          >
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto mb-4 h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <Package className="h-10 w-10 text-primary" />
+              </div>
+              <CardTitle className="text-2xl text-white">Inventory</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-hardware-light">Manage hardware stock, add, edit, and delete items</p>
+            </CardContent>
+          </Card>
 
-          <TabsContent value="sales">
-            <SalesPoint />
-          </TabsContent>
+          <Card 
+            className="border-2 border-hardware-steel/20 bg-hardware-dark/30 backdrop-blur-sm hover:border-primary transition-all cursor-pointer group"
+            onClick={() => navigate("/sales")}
+          >
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto mb-4 h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <ShoppingCart className="h-10 w-10 text-primary" />
+              </div>
+              <CardTitle className="text-2xl text-white">Point of Sale</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-hardware-light">Process sales and generate receipts</p>
+            </CardContent>
+          </Card>
 
           {userRole === "ceo" && (
-            <TabsContent value="users">
-              <UserManagement />
-            </TabsContent>
+            <Card 
+              className="border-2 border-hardware-steel/20 bg-hardware-dark/30 backdrop-blur-sm hover:border-primary transition-all cursor-pointer group"
+              onClick={() => navigate("/users")}
+            >
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto mb-4 h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <Users className="h-10 w-10 text-primary" />
+                </div>
+                <CardTitle className="text-2xl text-white">User Management</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <p className="text-hardware-light">Assign roles and manage users (CEO only)</p>
+              </CardContent>
+            </Card>
           )}
-        </Tabs>
+        </div>
       </main>
     </div>
   );
