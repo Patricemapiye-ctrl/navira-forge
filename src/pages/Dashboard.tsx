@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Wrench, LogOut, Package, ShoppingCart, Users, Clock } from "lucide-react";
+import StockAlerts from "@/components/StockAlerts";
+import AnalyticsDashboard from "@/components/AnalyticsDashboard";
+import SalesHistory from "@/components/SalesHistory";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -100,7 +103,7 @@ const Dashboard = () => {
           <p className="text-hardware-light">Select a module to get started</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-8">
           <Card 
             className="border-2 border-hardware-steel/20 bg-hardware-dark/30 backdrop-blur-sm hover:border-primary transition-all cursor-pointer group"
             onClick={() => navigate("/inventory")}
@@ -147,6 +150,16 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           )}
+        </div>
+
+        <StockAlerts />
+
+        <div className="mt-8">
+          <AnalyticsDashboard />
+        </div>
+
+        <div className="mt-8">
+          <SalesHistory />
         </div>
       </main>
     </div>
