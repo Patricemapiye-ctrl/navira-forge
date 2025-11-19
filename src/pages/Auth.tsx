@@ -5,12 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Wrench } from "lucide-react";
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState<"ceo" | "employee">("employee");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {
@@ -60,13 +62,16 @@ const Auth = () => {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/`
+            emailRedirectTo: `${window.location.origin}/`,
+            data: {
+              role: role
+            }
           }
         });
         if (error) throw error;
         toast({
           title: "Account created!",
-          description: "Successfully signed up."
+          description: `Successfully signed up as ${role === "ceo" ? "CEO" : "Employee"}.`
         });
       }
     } catch (error: any) {
@@ -99,6 +104,20 @@ const Auth = () => {
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} required className="border-hardware-steel/30" />
             </div>
+            {!isLogin && (
+              <div className="space-y-2">
+                <Label htmlFor="role">Account Type</Label>
+                <Select value={role} onValueChange={(value: "ceo" | "employee") => setRole(value)}>
+                  <SelectTrigger id="role" className="border-hardware-steel/30">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ceo">CEO (Full Access)</SelectItem>
+                    <SelectItem value="employee">Employee (Limited Access)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
             <Button type="submit" className="w-full bg-primary hover:bg-primary/90" disabled={loading}>
               {loading ? "Processing..." : isLogin ? "Sign In" : "Sign Up"}
             </Button>
