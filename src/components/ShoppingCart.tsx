@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ShoppingCart as CartIcon, Trash2, Plus, Minus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { formatCurrency } from "@/lib/currency";
 
 export interface CartItem {
   id: string;
@@ -90,9 +91,9 @@ const ShoppingCart = ({ items, onUpdateQuantity, onRemoveItem, onCheckout }: Sho
                         </Button>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-hardware-light">${item.unit_price.toFixed(2)} each</p>
+                        <p className="text-sm text-hardware-light">{formatCurrency(item.unit_price)} each</p>
                         <p className="font-semibold text-primary">
-                          ${(item.unit_price * item.quantity).toFixed(2)}
+                          {formatCurrency(item.unit_price * item.quantity)}
                         </p>
                       </div>
                     </div>
@@ -105,7 +106,7 @@ const ShoppingCart = ({ items, onUpdateQuantity, onRemoveItem, onCheckout }: Sho
               <div className="border-t border-primary/20 pt-4">
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-lg font-semibold text-white">Total:</span>
-                  <span className="text-2xl font-bold text-primary">${total.toFixed(2)}</span>
+                  <span className="text-2xl font-bold text-primary">{formatCurrency(total)}</span>
                 </div>
                 <Button
                   onClick={onCheckout}

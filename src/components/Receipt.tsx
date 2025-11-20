@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import { Wrench } from "lucide-react";
+import { formatCurrency } from "@/lib/currency";
 
 interface ReceiptProps {
   sale: {
@@ -73,8 +74,8 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ sale }, ref) => {
             <tr key={index} className="border-b border-gray-200">
               <td className="py-2">{item.item_name}</td>
               <td className="text-center py-2">{item.quantity}</td>
-              <td className="text-right py-2">R{item.unit_price.toFixed(2)}</td>
-              <td className="text-right py-2">R{item.subtotal.toFixed(2)}</td>
+              <td className="text-right py-2">{formatCurrency(item.unit_price)}</td>
+              <td className="text-right py-2">{formatCurrency(item.subtotal)}</td>
             </tr>
           ))}
         </tbody>
@@ -83,7 +84,7 @@ const Receipt = forwardRef<HTMLDivElement, ReceiptProps>(({ sale }, ref) => {
       <div className="border-t-2 border-gray-300 pt-4 mb-6">
         <div className="flex justify-between text-xl font-bold">
           <span>TOTAL:</span>
-          <span>R{sale.total_amount.toFixed(2)}</span>
+          <span>{formatCurrency(sale.total_amount)}</span>
         </div>
       </div>
 

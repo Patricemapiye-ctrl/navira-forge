@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Wrench } from "lucide-react";
+import { Wrench, ArrowLeft } from "lucide-react";
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
@@ -91,6 +91,15 @@ const Auth = () => {
             <Wrench className="h-12 w-12 text-primary" />
             <h1 className="text-3xl font-bold text-hardware-dark">NAVIRA HARDWARE</h1>
           </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/")}
+            className="absolute top-4 left-4 text-hardware-steel hover:text-primary"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Home
+          </Button>
           
           
         </CardHeader>
