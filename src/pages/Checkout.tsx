@@ -9,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import { Wrench, ArrowLeft, CreditCard, Banknote, Smartphone } from "lucide-react";
 import { CartItem } from "@/components/ShoppingCart";
+import { formatCurrency } from "@/lib/currency";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -241,7 +242,7 @@ const Checkout = () => {
                     className="w-full bg-primary hover:bg-primary/90 text-white"
                     size="lg"
                   >
-                    {isProcessing ? "Processing..." : `Place Order - $${total.toFixed(2)}`}
+                    {isProcessing ? "Processing..." : `Place Order - ${formatCurrency(total)}`}
                   </Button>
                 </form>
               </CardContent>
@@ -264,11 +265,11 @@ const Checkout = () => {
                       <div className="flex-1">
                         <p className="font-medium text-white">{item.item_name}</p>
                         <p className="text-sm text-hardware-light">
-                          {item.quantity} × ${item.unit_price.toFixed(2)}
+                          {item.quantity} × {formatCurrency(item.unit_price)}
                         </p>
                       </div>
                       <p className="font-semibold text-primary">
-                        ${(item.quantity * item.unit_price).toFixed(2)}
+                        {formatCurrency(item.quantity * item.unit_price)}
                       </p>
                     </div>
                   ))}
@@ -276,7 +277,7 @@ const Checkout = () => {
                 <div className="pt-4 border-t border-primary/20">
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-semibold text-white">Total:</span>
-                    <span className="text-2xl font-bold text-primary">${total.toFixed(2)}</span>
+                    <span className="text-2xl font-bold text-primary">{formatCurrency(total)}</span>
                   </div>
                 </div>
               </CardContent>

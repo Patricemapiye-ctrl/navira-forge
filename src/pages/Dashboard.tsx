@@ -4,10 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Wrench, LogOut, Package, ShoppingCart, Users, Clock } from "lucide-react";
+import { Wrench, LogOut, Package, ShoppingCart, Users, Clock, User as UserIcon } from "lucide-react";
 import StockAlerts from "@/components/StockAlerts";
 import AnalyticsDashboard from "@/components/AnalyticsDashboard";
 import SalesHistory from "@/components/SalesHistory";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -85,6 +86,15 @@ const Dashboard = () => {
               </div>
               <p className="text-sm text-hardware-light">{formatDate(currentTime)}</p>
             </div>
+            <ThemeToggle />
+            <Button
+              onClick={() => navigate("/profile")}
+              variant="outline"
+              className="border-primary text-primary hover:bg-primary hover:text-white"
+            >
+              <UserIcon className="h-4 w-4 mr-2" />
+              Profile
+            </Button>
             <Button
               onClick={handleLogout}
               variant="outline"

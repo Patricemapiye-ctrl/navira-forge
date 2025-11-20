@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Wrench, ShoppingCart as CartIcon, Search, Package, ArrowLeft } from "lucide-react";
 import ShoppingCart, { CartItem } from "@/components/ShoppingCart";
+import { formatCurrency } from "@/lib/currency";
 
 interface Product {
   id: string;
@@ -227,7 +228,7 @@ const Shop = () => {
                 </p>
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-2xl font-bold text-primary">${Number(product.unit_price).toFixed(2)}</p>
+                    <p className="text-2xl font-bold text-primary">{formatCurrency(Number(product.unit_price))}</p>
                     <p className="text-xs text-hardware-light flex items-center gap-1">
                       <Package className="h-3 w-3" />
                       {product.quantity} in stock

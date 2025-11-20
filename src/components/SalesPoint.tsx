@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { ShoppingCart, Printer, Trash2 } from "lucide-react";
 import Receipt from "@/components/Receipt";
+import { formatCurrency } from "@/lib/currency";
 interface InventoryItem {
   id: string;
   item_name: string;
@@ -32,6 +33,7 @@ const SalesPoint = () => {
   const [customerContact, setCustomerContact] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [lastSale, setLastSale] = useState<any>(null);
+  const [isProcessingSale, setIsProcessingSale] = useState(false);
   const {
     toast
   } = useToast();
@@ -90,6 +92,12 @@ const SalesPoint = () => {
       });
       return;
     }
+    
+    if (isProcessingSale) {
+      return;
+    }
+    
+    setIsProcessingSale(true);
     try {
       const {
         data: user
@@ -147,6 +155,8 @@ const SalesPoint = () => {
         description: error.message,
         variant: "destructive"
       });
+    } finally {
+      setIsProcessingSale(false);
     }
   };
   const handlePrint = () => {
@@ -235,8 +245,8 @@ const SalesPoint = () => {
                   {cart.map(item => <TableRow key={item.inventory_id}>
                       <TableCell>{item.item_name}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
-                      <TableCell>R{item.unit_price.toFixed(2)}</TableCell>
-                      <TableCell>R{item.subtotal.toFixed(2)}</TableCell>
+                      <TableCell>{formatCurrency(item.unit_price)}</TableCell>
+                      <TableCell>{formatCurrency(item.subtotal)}</TableCell>
                       <TableCell>
                         <Button variant="ghost" size="sm" onClick={() => removeFromCart(item.inventory_id)}>
                           <Trash2 className="h-4 w-4 text-destructive" />
