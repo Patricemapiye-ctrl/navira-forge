@@ -6,9 +6,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Wrench, ShoppingCart as CartIcon, Search, Package, ArrowLeft } from "lucide-react";
+import { Wrench, ShoppingCart as CartIcon, Search, Package, ArrowLeft, User } from "lucide-react";
 import ShoppingCart, { CartItem } from "@/components/ShoppingCart";
 import { formatCurrency } from "@/lib/currency";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface Product {
   id: string;
@@ -28,14 +35,32 @@ const Shop = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [user, setUser] = useState<any>(null);
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [authMode, setAuthMode] = useState<"login" | "signup">("signup");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
   useEffect(() => {
     fetchProducts();
+    checkUser();
+    
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
     filterProducts();
   }, [searchTerm, selectedCategory, products]);
+
+  const checkUser = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    setUser(session?.user ?? null);
+  };
 
   const fetchProducts = async () => {
     const { data, error } = await supabase
@@ -135,7 +160,66 @@ const Shop = () => {
       });
       return;
     }
+    
+    if (!user) {
+      setShowAuthDialog(true);
+      return;
+    }
+    
     navigate("/checkout", { state: { cart } });
+  };
+
+  const handleAuth = async () => {
+    try {
+      if (authMode === "signup") {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/shop`,
+            data: {
+              name,
+            }
+          }
+        });
+
+        if (error) throw error;
+
+        toast({
+          title: "Account Created",
+          description: "Please check your email to verify your account.",
+        });
+        setShowAuthDialog(false);
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) throw error;
+
+        toast({
+          title: "Welcome Back",
+          description: "You've successfully logged in.",
+        });
+        setShowAuthDialog(false);
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    toast({
+      title: "Logged Out",
+      description: "You've been logged out successfully.",
+    });
   };
 
   return (
@@ -159,12 +243,44 @@ const Shop = () => {
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back
               </Button>
-              <ShoppingCart
-                items={cart}
-                onUpdateQuantity={updateCartQuantity}
-                onRemoveItem={removeFromCart}
-                onCheckout={handleCheckout}
-              />
+              {user ? (
+                <>
+                  <Button
+                    onClick={handleLogout}
+                    variant="outline"
+                    className="border-primary text-primary hover:bg-primary hover:text-white"
+                  >
+                    <User className="h-4 w-4 mr-2" />
+                    Logout
+                  </Button>
+                  <ShoppingCart
+                    items={cart}
+                    onUpdateQuantity={updateCartQuantity}
+                    onRemoveItem={removeFromCart}
+                    onCheckout={handleCheckout}
+                  />
+                </>
+              ) : (
+                <>
+                  <Button
+                    onClick={() => {
+                      setAuthMode("login");
+                      setShowAuthDialog(true);
+                    }}
+                    variant="outline"
+                    className="border-primary text-primary hover:bg-primary hover:text-white"
+                  >
+                    <User className="h-4 w-4 mr-2" />
+                    Login
+                  </Button>
+                  <ShoppingCart
+                    items={cart}
+                    onUpdateQuantity={updateCartQuantity}
+                    onRemoveItem={removeFromCart}
+                    onCheckout={handleCheckout}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -255,6 +371,72 @@ const Shop = () => {
           </div>
         )}
       </main>
+
+      {/* Auth Dialog */}
+      <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
+        <DialogContent className="bg-hardware-dark border-primary/20">
+          <DialogHeader>
+            <DialogTitle className="text-white text-2xl">
+              {authMode === "signup" ? "Create Account" : "Login"}
+            </DialogTitle>
+            <DialogDescription className="text-hardware-light">
+              {authMode === "signup"
+                ? "Create an account to complete your purchase"
+                : "Login to continue shopping"}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 mt-4">
+            {authMode === "signup" && (
+              <div>
+                <label className="text-sm text-hardware-light mb-1 block">Name</label>
+                <Input
+                  type="text"
+                  placeholder="Your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="bg-hardware-steel/20 border-primary/20 text-white"
+                />
+              </div>
+            )}
+            <div>
+              <label className="text-sm text-hardware-light mb-1 block">Email</label>
+              <Input
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-hardware-steel/20 border-primary/20 text-white"
+              />
+            </div>
+            <div>
+              <label className="text-sm text-hardware-light mb-1 block">Password</label>
+              <Input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="bg-hardware-steel/20 border-primary/20 text-white"
+              />
+            </div>
+            <Button
+              onClick={handleAuth}
+              className="w-full bg-primary hover:bg-primary/90"
+            >
+              {authMode === "signup" ? "Create Account" : "Login"}
+            </Button>
+            <div className="text-center">
+              <button
+                onClick={() => setAuthMode(authMode === "signup" ? "login" : "signup")}
+                className="text-sm text-primary hover:underline"
+              >
+                {authMode === "signup"
+                  ? "Already have an account? Login"
+                  : "Don't have an account? Sign up"}
+              </button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
