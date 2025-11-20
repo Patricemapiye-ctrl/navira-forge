@@ -203,34 +203,6 @@ const AnalyticsDashboard = () => {
             </ResponsiveContainer>
           </CardContent>
         </Card>
-
-        {/* Sales Count by Day */}
-        <Card className="bg-hardware-dark/50 border-primary/20 lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-primary">
-              <ShoppingCart className="h-5 w-5" />
-              Daily Sales Count
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={salesTrend}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="date" stroke="#9CA3AF" />
-                <YAxis stroke="#9CA3AF" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#1F2937",
-                    border: "1px solid #FF6B35",
-                    borderRadius: "8px",
-                    color: "#fff",
-                  }}
-                />
-                <Bar dataKey="count" fill="#FF6B35" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
