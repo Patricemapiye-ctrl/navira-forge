@@ -8,6 +8,7 @@ import { Wrench, LogOut, Package, ShoppingCart, Users, Clock, User as UserIcon }
 import StockAlerts from "@/components/StockAlerts";
 import AnalyticsDashboard from "@/components/AnalyticsDashboard";
 import SalesHistory from "@/components/SalesHistory";
+import OnlineSalesWidget from "@/components/OnlineSalesWidget";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Dashboard = () => {
@@ -144,7 +145,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          {userRole === "ceo" && (
+          {userRole === "admin" && (
             <Card 
               className="border-2 border-hardware-steel/20 bg-hardware-dark/30 backdrop-blur-sm hover:border-primary transition-all cursor-pointer group"
               onClick={() => navigate("/users")}
@@ -156,13 +157,17 @@ const Dashboard = () => {
                 <CardTitle className="text-2xl text-white">User Management</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <p className="text-hardware-light">Assign roles and manage users (CEO only)</p>
+                <p className="text-hardware-light">Assign roles and manage users (Admin only)</p>
               </CardContent>
             </Card>
           )}
         </div>
 
         <StockAlerts />
+
+        <div className="mt-8">
+          <OnlineSalesWidget />
+        </div>
 
         <div className="mt-8">
           <AnalyticsDashboard />

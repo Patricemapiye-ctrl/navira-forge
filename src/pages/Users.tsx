@@ -26,7 +26,7 @@ const Users = () => {
       .eq("user_id", session.user.id)
       .single();
 
-    if (roleData?.role !== "ceo") {
+    if (roleData?.role !== "admin") {
       navigate("/dashboard");
       return;
     }

@@ -66,7 +66,7 @@ const UserManagement = () => {
 
       const { error } = await supabase
         .from("user_roles")
-        .insert([{ user_id: user.id, role: role as "ceo" | "employee" }]);
+        .insert([{ user_id: user.id, role: role as "admin" | "employee" }]);
 
       if (error) throw error;
 
@@ -147,7 +147,7 @@ const UserManagement = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="ceo">CEO</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
                       <SelectItem value="employee">Employee</SelectItem>
                     </SelectContent>
                   </Select>

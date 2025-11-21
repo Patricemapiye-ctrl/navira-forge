@@ -42,6 +42,9 @@ const Checkout = () => {
     setIsProcessing(true);
 
     try {
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+
       // Generate sale number
       const { data: saleNumberData, error: saleNumberError } = await supabase.rpc(
         "generate_sale_number"
@@ -49,7 +52,7 @@ const Checkout = () => {
 
       if (saleNumberError) throw saleNumberError;
 
-      // Create sale record
+      // Create sale record with online flag and user_id
       const { data: saleData, error: saleError } = await supabase
         .from("sales")
         .insert({
@@ -59,6 +62,8 @@ const Checkout = () => {
           customer_name: customerInfo.name,
           customer_contact: customerInfo.contact,
           sold_by: null, // Online order
+          is_online: true, // Mark as online sale
+          user_id: user?.id, // Track which user made the purchase
         })
         .select()
         .single();

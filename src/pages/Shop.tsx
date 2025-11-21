@@ -5,8 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Wrench, ShoppingCart as CartIcon, Search, Package, ArrowLeft, User } from "lucide-react";
+import { Wrench, ShoppingCart as CartIcon, Search, Package, ArrowLeft, User, History } from "lucide-react";
 import ShoppingCart, { CartItem } from "@/components/ShoppingCart";
 import { formatCurrency } from "@/lib/currency";
 import {
@@ -246,6 +253,14 @@ const Shop = () => {
               {user ? (
                 <>
                   <Button
+                    onClick={() => navigate("/my-orders")}
+                    variant="outline"
+                    className="border-primary text-primary hover:bg-primary hover:text-white"
+                  >
+                    <History className="h-4 w-4 mr-2" />
+                    My Orders
+                  </Button>
+                  <Button
                     onClick={handleLogout}
                     variant="outline"
                     className="border-primary text-primary hover:bg-primary hover:text-white"
@@ -300,21 +315,23 @@ const Shop = () => {
                   className="pl-10 bg-hardware-steel/20 border-primary/20 text-white"
                 />
               </div>
-              <div className="flex gap-2 flex-wrap">
-                {categories.map((category) => (
-                  <Button
-                    key={category}
-                    variant={selectedCategory === category ? "default" : "outline"}
-                    onClick={() => setSelectedCategory(category)}
-                    className={
-                      selectedCategory === category
-                        ? "bg-primary hover:bg-primary/90"
-                        : "border-primary/20 text-hardware-light hover:bg-primary/20"
-                    }
-                  >
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </Button>
-                ))}
+              <div className="w-full md:w-64">
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <SelectTrigger className="bg-hardware-steel/20 border-primary/20 text-white">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-hardware-dark border-primary/20">
+                    {categories.map((category) => (
+                      <SelectItem 
+                        key={category} 
+                        value={category}
+                        className="text-white hover:bg-hardware-steel/50"
+                      >
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </CardContent>

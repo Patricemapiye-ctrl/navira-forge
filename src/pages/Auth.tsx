@@ -12,7 +12,7 @@ const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"ceo" | "employee">("employee");
+  const [role, setRole] = useState<"admin" | "employee">("employee");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {
@@ -71,7 +71,7 @@ const Auth = () => {
         if (error) throw error;
         toast({
           title: "Account created!",
-          description: `Successfully signed up as ${role === "ceo" ? "CEO" : "Employee"}.`
+          description: `Successfully signed up as ${role === "admin" ? "Admin" : "Employee"}.`
         });
       }
     } catch (error: any) {
@@ -116,12 +116,12 @@ const Auth = () => {
             {!isLogin && (
               <div className="space-y-2">
                 <Label htmlFor="role">Account Type</Label>
-                <Select value={role} onValueChange={(value: "ceo" | "employee") => setRole(value)}>
+                <Select value={role} onValueChange={(value: "admin" | "employee") => setRole(value)}>
                   <SelectTrigger id="role" className="border-hardware-steel/30">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="ceo">CEO (Full Access)</SelectItem>
+                    <SelectItem value="admin">Admin (Full Access)</SelectItem>
                     <SelectItem value="employee">Employee (Limited Access)</SelectItem>
                   </SelectContent>
                 </Select>

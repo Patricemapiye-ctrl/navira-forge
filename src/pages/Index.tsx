@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Wrench, ShoppingBag, Settings } from "lucide-react";
+import { Wrench, ShoppingBag, LogIn } from "lucide-react";
 const Index = () => {
   const navigate = useNavigate();
   return <div className="min-h-screen bg-gradient-to-br from-hardware-dark via-hardware-steel to-hardware-metal">
@@ -51,7 +51,7 @@ const Index = () => {
           size="icon"
           title="Staff Portal"
         >
-          <Settings className="h-5 w-5 text-primary" />
+          <LogIn className="h-5 w-5 text-primary" />
         </Button>
 
         <div className="mt-16 text-center">
