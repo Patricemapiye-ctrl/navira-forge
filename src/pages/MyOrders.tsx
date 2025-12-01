@@ -40,15 +40,16 @@ const MyOrders = () => {
         return;
       }
 
-      // Use rpc or raw query to bypass type checking until types are regenerated
-      const { data, error } = await supabase
+      const untypedClient = supabase as any;
+
+      const { data, error } = await untypedClient
         .from("sales")
-        .select("*") as any;
+        .select("*");
 
       if (error) throw error;
       
       // Filter for user's online orders manually
-      const userOrders = (data || []).filter((sale: any) => 
+      const userOrders = (data ?? []).filter((sale: any) =>
         sale.user_id === user.id && sale.is_online === true
       );
       
