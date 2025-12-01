@@ -38,22 +38,18 @@ const MyOrders = () => {
         return;
       }
 
-      const query = supabase
+      const { data, error } = await supabase
         .from("sales")
-        .select("id, sale_number, total_amount, sale_date, payment_method, customer_name, customer_contact")
+        .select("id, sale_number, total_amount, sale_date, payment_method, customer_name, customer_contact, user_id, is_online")
+        .eq("user_id", user.id)
         .order("sale_date", { ascending: false });
-      
-      // Apply filters manually to avoid type issues
-      const { data, error } = await query;
 
       if (error) throw error;
       
-      // Filter for user's online orders
-      const userOnlineOrders = (data || []).filter((sale: any) => 
-        sale.user_id === user.id && sale.is_online === true
-      );
+      // Filter for online sales only
+      const onlineSales = (data || []).filter((sale: any) => sale.is_online === true);
       
-      setSales(userOnlineOrders as Sale[]);
+      setSales(onlineSales as Sale[]);
     } catch (error: any) {
       toast({
         title: "Error",

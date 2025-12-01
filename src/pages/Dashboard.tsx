@@ -114,7 +114,7 @@ const Dashboard = () => {
           <p className="text-hardware-light">Select a module to get started</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
           <Card 
             className="border-2 border-hardware-steel/20 bg-hardware-dark/30 backdrop-blur-sm hover:border-primary transition-all cursor-pointer group"
             onClick={() => navigate("/inventory")}
@@ -127,21 +127,6 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-hardware-light">Manage hardware stock, add, edit, and delete items</p>
-            </CardContent>
-          </Card>
-
-          <Card 
-            className="border-2 border-hardware-steel/20 bg-hardware-dark/30 backdrop-blur-sm hover:border-primary transition-all cursor-pointer group"
-            onClick={() => navigate("/sales")}
-          >
-            <CardHeader className="text-center pb-4">
-              <div className="mx-auto mb-4 h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <ShoppingCart className="h-10 w-10 text-primary" />
-              </div>
-              <CardTitle className="text-2xl text-white">Point of Sale</CardTitle>
-            </CardHeader>
-            <CardContent className="text-center">
-              <p className="text-hardware-light">Process sales and generate receipts</p>
             </CardContent>
           </Card>
 

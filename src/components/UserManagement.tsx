@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Users, Trash2 } from "lucide-react";
+import { Users, Trash2, Edit } from "lucide-react";
 
 interface UserRole {
   id: string;
@@ -20,8 +20,11 @@ interface UserRole {
 const UserManagement = () => {
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("employee");
+  const [editingRole, setEditingRole] = useState<UserRole | null>(null);
+  const [newRole, setNewRole] = useState<string>("employee");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -49,6 +52,28 @@ const UserManagement = () => {
     e.preventDefault();
 
     try {
+      // Check role limits
+      const adminCount = userRoles.filter(r => r.role === 'admin').length;
+      const employeeCount = userRoles.filter(r => r.role === 'employee').length;
+
+      if (role === 'admin' && adminCount >= 2) {
+        toast({
+          title: "Limit Reached",
+          description: "Maximum of 2 admins allowed.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (role === 'employee' && employeeCount >= 5) {
+        toast({
+          title: "Limit Reached",
+          description: "Maximum of 5 employees allowed.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const { data, error: queryError } = await supabase.auth.admin.listUsers();
       
       if (queryError) throw queryError;
@@ -78,6 +103,64 @@ const UserManagement = () => {
       setOpen(false);
       setEmail("");
       setRole("employee");
+      fetchUserRoles();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleEditRole = (userRole: UserRole) => {
+    setEditingRole(userRole);
+    setNewRole(userRole.role);
+    setEditOpen(true);
+  };
+
+  const handleUpdateRole = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!editingRole) return;
+
+    try {
+      // Check role limits
+      const adminCount = userRoles.filter(r => r.role === 'admin' && r.id !== editingRole.id).length;
+      const employeeCount = userRoles.filter(r => r.role === 'employee' && r.id !== editingRole.id).length;
+
+      if (newRole === 'admin' && adminCount >= 2) {
+        toast({
+          title: "Limit Reached",
+          description: "Maximum of 2 admins allowed.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (newRole === 'employee' && employeeCount >= 5) {
+        toast({
+          title: "Limit Reached",
+          description: "Maximum of 5 employees allowed.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const { error } = await supabase
+        .from("user_roles")
+        .update({ role: newRole as "admin" | "employee" })
+        .eq("id", editingRole.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "User role updated successfully.",
+      });
+
+      setEditOpen(false);
+      setEditingRole(null);
       fetchUserRoles();
     } catch (error: any) {
       toast({
@@ -158,6 +241,38 @@ const UserManagement = () => {
               </form>
             </DialogContent>
           </Dialog>
+          <Dialog open={editOpen} onOpenChange={setEditOpen}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Edit User Role</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleUpdateRole} className="space-y-4">
+                <div>
+                  <Label>User ID</Label>
+                  <Input
+                    value={editingRole?.user_id || ""}
+                    disabled
+                    className="font-mono text-xs"
+                  />
+                </div>
+                <div>
+                  <Label>Role</Label>
+                  <Select value={newRole} onValueChange={setNewRole}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="admin">Admin</SelectItem>
+                      <SelectItem value="employee">Employee</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
+                  Update Role
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
       </CardHeader>
       <CardContent className="p-0">
@@ -181,13 +296,22 @@ const UserManagement = () => {
                 </TableCell>
                 <TableCell>{new Date(userRole.created_at).toLocaleDateString()}</TableCell>
                 <TableCell>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleDeleteRole(userRole.id)}
-                  >
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleEditRole(userRole)}
+                    >
+                      <Edit className="h-4 w-4 text-primary" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDeleteRole(userRole.id)}
+                    >
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
