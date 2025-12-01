@@ -129,8 +129,8 @@ const Profile = () => {
                   Account Role
                 </Label>
                 <div className="flex items-center gap-2">
-                  <Badge variant={role === "ceo" ? "default" : "secondary"} className="text-lg py-2 px-4">
-                    {role === "ceo" ? "CEO (Full Access)" : "Employee (Limited Access)"}
+                  <Badge variant={role === "admin" ? "default" : "secondary"} className="text-lg py-2 px-4">
+                    {role === "admin" ? "Admin (Full Access)" : "Employee (Limited Access)"}
                   </Badge>
                 </div>
               </div>

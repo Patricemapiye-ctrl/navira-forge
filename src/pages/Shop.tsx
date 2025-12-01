@@ -70,18 +70,18 @@ const Shop = () => {
   };
 
   const fetchProducts = async () => {
+    // Fetch products without requiring authentication
     const { data, error } = await supabase
       .from("inventory")
-      .select("*")
+      .select("id, item_name, item_code, description, category, quantity, unit_price")
       .gt("quantity", 0)
       .order("item_name");
 
     if (error) {
-      toast({
-        title: "Error",
-        description: "Failed to load products.",
-        variant: "destructive",
-      });
+      console.error("Error fetching products:", error);
+      // Don't show error to users - products will display empty
+      setProducts([]);
+      setFilteredProducts([]);
     } else {
       setProducts(data || []);
       setFilteredProducts(data || []);
