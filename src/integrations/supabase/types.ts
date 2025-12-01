@@ -110,33 +110,39 @@ export type Database = {
           customer_contact: string | null
           customer_name: string | null
           id: string
+          is_online: boolean | null
           payment_method: string
           sale_date: string | null
           sale_number: string
           sold_by: string | null
           total_amount: number
+          user_id: string | null
         }
         Insert: {
           created_at?: string | null
           customer_contact?: string | null
           customer_name?: string | null
           id?: string
+          is_online?: boolean | null
           payment_method: string
           sale_date?: string | null
           sale_number: string
           sold_by?: string | null
           total_amount: number
+          user_id?: string | null
         }
         Update: {
           created_at?: string | null
           customer_contact?: string | null
           customer_name?: string | null
           id?: string
+          is_online?: boolean | null
           payment_method?: string
           sale_date?: string | null
           sale_number?: string
           sold_by?: string | null
           total_amount?: number
+          user_id?: string | null
         }
         Relationships: []
       }

@@ -17,6 +17,8 @@ interface Sale {
   payment_method: string;
   customer_name: string | null;
   customer_contact: string | null;
+  user_id?: string | null;
+  is_online?: boolean | null;
 }
 
 const MyOrders = () => {
@@ -40,16 +42,13 @@ const MyOrders = () => {
 
       const { data, error } = await supabase
         .from("sales")
-        .select("id, sale_number, total_amount, sale_date, payment_method, customer_name, customer_contact, user_id, is_online")
+        .select("id, sale_number, total_amount, sale_date, payment_method, customer_name, customer_contact")
         .eq("user_id", user.id)
         .order("sale_date", { ascending: false });
 
       if (error) throw error;
       
-      // Filter for online sales only
-      const onlineSales = (data || []).filter((sale: any) => sale.is_online === true);
-      
-      setSales(onlineSales as Sale[]);
+      setSales((data || []) as unknown as Sale[]);
     } catch (error: any) {
       toast({
         title: "Error",
