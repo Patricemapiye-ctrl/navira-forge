@@ -130,7 +130,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          {(userRole === "admin" || userRole === "employee") && (
+          {userRole === "employee" && (
             <Card 
               className="border-2 border-hardware-steel/20 bg-hardware-dark/30 backdrop-blur-sm hover:border-green-500 transition-all cursor-pointer group"
               onClick={() => navigate("/sales")}
