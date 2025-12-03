@@ -19,22 +19,36 @@ const Auth = () => {
     toast
   } = useToast();
   useEffect(() => {
-    supabase.auth.getSession().then(({
-      data: {
-        session
+    const initAuth = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error) {
+          // Clear stale session data on error
+          await supabase.auth.signOut();
+          return;
+        }
+        if (session) {
+          navigate("/dashboard");
+        }
+      } catch (err) {
+        // Handle refresh token errors by clearing session
+        await supabase.auth.signOut();
       }
-    }) => {
-      if (session) {
-        navigate("/dashboard");
-      }
-    });
+    };
+    
+    initAuth();
+    
     const {
       data: {
         subscription
       }
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        navigate("/dashboard");
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN') {
+        if (session) {
+          navigate("/dashboard");
+        }
+      } else if (event === 'SIGNED_OUT') {
+        // Session cleared
       }
     });
     return () => subscription.unsubscribe();
