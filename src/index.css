@@ -8,90 +8,105 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Hardware theme - Industrial steel and orange accents */
-    --background: 210 20% 98%;
-    --foreground: 215 25% 15%;
+    /* LIGHT MODE - Warm amber/cream hardware store feel */
+    --background: 40 30% 96%;
+    --foreground: 30 10% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card: 40 40% 99%;
+    --card-foreground: 30 10% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 15%;
+    --popover: 40 40% 99%;
+    --popover-foreground: 30 10% 15%;
 
-    --primary: 24 95% 53%;
+    --primary: 25 95% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 15% 88%;
-    --secondary-foreground: 215 25% 15%;
+    --secondary: 35 30% 90%;
+    --secondary-foreground: 30 10% 20%;
 
-    --muted: 210 15% 92%;
-    --muted-foreground: 215 15% 45%;
+    --muted: 35 20% 92%;
+    --muted-foreground: 30 10% 45%;
 
-    --accent: 24 95% 53%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 45 100% 50%;
+    --accent-foreground: 30 10% 15%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 20% 85%;
-    --input: 210 20% 85%;
-    --ring: 24 95% 53%;
+    --border: 35 25% 85%;
+    --input: 35 25% 88%;
+    --ring: 25 95% 50%;
 
-    --radius: 0.25rem;
+    --radius: 0.5rem;
 
-    --hardware-steel: 210 15% 35%;
-    --hardware-metal: 210 20% 50%;
-    --hardware-orange: 24 95% 53%;
-    --hardware-yellow: 45 100% 51%;
-    --hardware-dark: 215 25% 15%;
+    --hardware-steel: 30 5% 45%;
+    --hardware-metal: 35 10% 60%;
+    --hardware-orange: 25 95% 50%;
+    --hardware-yellow: 45 100% 50%;
+    --hardware-dark: 30 10% 15%;
+    --hardware-light: 40 30% 85%;
 
-    --sidebar-background: 215 25% 15%;
-    --sidebar-foreground: 210 20% 95%;
-    --sidebar-primary: 24 95% 53%;
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+
+    --sidebar-background: 30 10% 15%;
+    --sidebar-foreground: 40 30% 95%;
+    --sidebar-primary: 25 95% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 20% 25%;
-    --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 210 15% 25%;
-    --sidebar-ring: 24 95% 53%;
+    --sidebar-accent: 30 15% 25%;
+    --sidebar-accent-foreground: 40 30% 95%;
+    --sidebar-border: 30 10% 25%;
+    --sidebar-ring: 25 95% 50%;
   }
 
   .dark {
-    --background: 215 25% 12%;
-    --foreground: 210 20% 95%;
+    /* DARK MODE - Deep teal/slate professional industrial */
+    --background: 200 25% 10%;
+    --foreground: 185 15% 95%;
 
-    --card: 215 25% 15%;
-    --card-foreground: 210 20% 95%;
+    --card: 200 25% 13%;
+    --card-foreground: 185 15% 95%;
 
-    --popover: 215 25% 15%;
-    --popover-foreground: 210 20% 95%;
+    --popover: 200 25% 13%;
+    --popover-foreground: 185 15% 95%;
 
-    --primary: 24 95% 53%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 175 70% 45%;
+    --primary-foreground: 200 25% 10%;
 
-    --secondary: 210 15% 25%;
-    --secondary-foreground: 210 20% 95%;
+    --secondary: 200 20% 20%;
+    --secondary-foreground: 185 15% 95%;
 
-    --muted: 210 15% 20%;
-    --muted-foreground: 215 15% 60%;
+    --muted: 200 20% 18%;
+    --muted-foreground: 185 10% 60%;
 
-    --accent: 24 95% 53%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 175 70% 45%;
+    --accent-foreground: 200 25% 10%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 15% 25%;
-    --input: 210 15% 25%;
-    --ring: 24 95% 53%;
+    --border: 200 20% 22%;
+    --input: 200 20% 20%;
+    --ring: 175 70% 45%;
 
-    --sidebar-background: 215 25% 10%;
-    --sidebar-foreground: 210 20% 95%;
-    --sidebar-primary: 24 95% 53%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 20% 20%;
-    --sidebar-accent-foreground: 210 20% 95%;
-    --sidebar-border: 210 15% 20%;
-    --sidebar-ring: 24 95% 53%;
+    --hardware-steel: 200 15% 40%;
+    --hardware-metal: 200 20% 55%;
+    --hardware-orange: 175 70% 45%;
+    --hardware-yellow: 55 90% 55%;
+    --hardware-dark: 200 25% 8%;
+    --hardware-light: 185 15% 80%;
+
+    --success: 160 70% 40%;
+    --success-foreground: 0 0% 100%;
+
+    --sidebar-background: 200 25% 8%;
+    --sidebar-foreground: 185 15% 95%;
+    --sidebar-primary: 175 70% 45%;
+    --sidebar-primary-foreground: 200 25% 10%;
+    --sidebar-accent: 200 20% 18%;
+    --sidebar-accent-foreground: 185 15% 95%;
+    --sidebar-border: 200 20% 18%;
+    --sidebar-ring: 175 70% 45%;
   }
 }
 
@@ -102,5 +117,15 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .gradient-hardware {
+    @apply bg-gradient-to-br from-background via-muted to-secondary;
+  }
+  
+  .gradient-dark {
+    @apply bg-gradient-to-br from-background via-card to-muted;
   }
 }
