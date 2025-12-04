@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      company_info: {
+        Row: {
+          address: string | null
+          cell_number: string | null
+          city: string | null
+          country: string | null
+          email: string | null
+          google_maps_url: string | null
+          id: string
+          landline: string | null
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          address?: string | null
+          cell_number?: string | null
+          city?: string | null
+          country?: string | null
+          email?: string | null
+          google_maps_url?: string | null
+          id?: string
+          landline?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          address?: string | null
+          cell_number?: string | null
+          city?: string | null
+          country?: string | null
+          email?: string | null
+          google_maps_url?: string | null
+          id?: string
+          landline?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       inventory: {
         Row: {
           category: string
@@ -55,6 +94,56 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      returns: {
+        Row: {
+          created_at: string | null
+          id: string
+          notes: string | null
+          processed_at: string | null
+          processed_by: string | null
+          reason: string
+          refund_amount: number | null
+          sale_id: string
+          status: string | null
+          user_id: string | null
+          warranty_claim: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          processed_at?: string | null
+          processed_by?: string | null
+          reason: string
+          refund_amount?: number | null
+          sale_id: string
+          status?: string | null
+          user_id?: string | null
+          warranty_claim?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          processed_at?: string | null
+          processed_by?: string | null
+          reason?: string
+          refund_amount?: number | null
+          sale_id?: string
+          status?: string | null
+          user_id?: string | null
+          warranty_claim?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "returns_sale_id_fkey"
+            columns: ["sale_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sale_items: {
         Row: {
@@ -109,12 +198,15 @@ export type Database = {
           created_at: string | null
           customer_contact: string | null
           customer_name: string | null
+          handled_at: string | null
+          handled_by: string | null
           id: string
           is_online: boolean | null
           payment_method: string
           sale_date: string | null
           sale_number: string
           sold_by: string | null
+          status: string | null
           total_amount: number
           user_id: string | null
         }
@@ -122,12 +214,15 @@ export type Database = {
           created_at?: string | null
           customer_contact?: string | null
           customer_name?: string | null
+          handled_at?: string | null
+          handled_by?: string | null
           id?: string
           is_online?: boolean | null
           payment_method: string
           sale_date?: string | null
           sale_number: string
           sold_by?: string | null
+          status?: string | null
           total_amount: number
           user_id?: string | null
         }
@@ -135,12 +230,15 @@ export type Database = {
           created_at?: string | null
           customer_contact?: string | null
           customer_name?: string | null
+          handled_at?: string | null
+          handled_by?: string | null
           id?: string
           is_online?: boolean | null
           payment_method?: string
           sale_date?: string | null
           sale_number?: string
           sold_by?: string | null
+          status?: string | null
           total_amount?: number
           user_id?: string | null
         }

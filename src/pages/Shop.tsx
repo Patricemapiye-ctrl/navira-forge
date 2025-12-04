@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Wrench, ShoppingCart as CartIcon, Search, Package, ArrowLeft, User, History } from "lucide-react";
+import { Wrench, ShoppingCart as CartIcon, Search, Package, ArrowLeft, User, History, Building } from "lucide-react";
 import ShoppingCart, { CartItem } from "@/components/ShoppingCart";
 import { formatCurrency } from "@/lib/currency";
 import {
@@ -23,6 +23,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import AIToolHelper from "@/components/AIToolHelper";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface Product {
   id: string;
@@ -230,22 +232,30 @@ const Shop = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-hardware-dark via-hardware-steel to-hardware-metal">
-      <header className="bg-hardware-dark/90 backdrop-blur-sm border-b-2 border-primary shadow-lg sticky top-0 z-50">
+    <div className="min-h-screen bg-background">
+      <header className="bg-card border-b border-border shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Wrench className="h-8 w-8 text-primary" />
               <div>
-                <h1 className="text-2xl font-bold text-white">NAVIRA HARDWARE</h1>
-                <p className="text-sm text-hardware-light">Online Store</p>
+                <h1 className="text-2xl font-bold text-foreground">NAVIRA HARDWARE</h1>
+                <p className="text-sm text-muted-foreground">Online Store</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
+              <ThemeToggle />
+              <Button
+                onClick={() => navigate("/company-info")}
+                variant="outline"
+                size="sm"
+              >
+                <Building className="h-4 w-4 mr-2" />
+                Contact
+              </Button>
               <Button
                 onClick={() => navigate("/")}
                 variant="outline"
-                className="border-primary text-primary hover:bg-primary hover:text-white"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back
@@ -255,7 +265,6 @@ const Shop = () => {
                   <Button
                     onClick={() => navigate("/my-orders")}
                     variant="outline"
-                    className="border-primary text-primary hover:bg-primary hover:text-white"
                   >
                     <History className="h-4 w-4 mr-2" />
                     My Orders
@@ -263,7 +272,6 @@ const Shop = () => {
                   <Button
                     onClick={handleLogout}
                     variant="outline"
-                    className="border-primary text-primary hover:bg-primary hover:text-white"
                   >
                     <User className="h-4 w-4 mr-2" />
                     Logout
@@ -283,7 +291,6 @@ const Shop = () => {
                       setShowAuthDialog(true);
                     }}
                     variant="outline"
-                    className="border-primary text-primary hover:bg-primary hover:text-white"
                   >
                     <User className="h-4 w-4 mr-2" />
                     Login
@@ -454,6 +461,8 @@ const Shop = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      <AIToolHelper products={products} />
     </div>
   );
 };
