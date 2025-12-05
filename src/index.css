@@ -8,55 +8,55 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* LIGHT MODE - Warm amber/cream hardware store feel */
-    --background: 40 30% 96%;
-    --foreground: 30 10% 15%;
+    /* LIGHT MODE - Clean, bright, modern */
+    --background: 0 0% 100%;
+    --foreground: 220 15% 20%;
 
-    --card: 40 40% 99%;
-    --card-foreground: 30 10% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 20%;
 
-    --popover: 40 40% 99%;
-    --popover-foreground: 30 10% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 20%;
 
-    --primary: 25 95% 50%;
+    --primary: 220 90% 56%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 35 30% 90%;
-    --secondary-foreground: 30 10% 20%;
+    --secondary: 220 15% 96%;
+    --secondary-foreground: 220 15% 30%;
 
-    --muted: 35 20% 92%;
-    --muted-foreground: 30 10% 45%;
+    --muted: 220 15% 95%;
+    --muted-foreground: 220 10% 50%;
 
-    --accent: 45 100% 50%;
-    --accent-foreground: 30 10% 15%;
+    --accent: 38 95% 55%;
+    --accent-foreground: 220 15% 15%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 35 25% 85%;
-    --input: 35 25% 88%;
-    --ring: 25 95% 50%;
+    --border: 220 15% 90%;
+    --input: 220 15% 92%;
+    --ring: 220 90% 56%;
 
     --radius: 0.5rem;
 
-    --hardware-steel: 30 5% 45%;
-    --hardware-metal: 35 10% 60%;
-    --hardware-orange: 25 95% 50%;
-    --hardware-yellow: 45 100% 50%;
-    --hardware-dark: 30 10% 15%;
-    --hardware-light: 40 30% 85%;
+    --hardware-steel: 220 10% 45%;
+    --hardware-metal: 220 10% 65%;
+    --hardware-orange: 38 95% 55%;
+    --hardware-yellow: 45 100% 55%;
+    --hardware-dark: 220 15% 20%;
+    --hardware-light: 220 15% 92%;
 
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
 
-    --sidebar-background: 30 10% 15%;
-    --sidebar-foreground: 40 30% 95%;
-    --sidebar-primary: 25 95% 50%;
+    --sidebar-background: 220 20% 18%;
+    --sidebar-foreground: 220 15% 95%;
+    --sidebar-primary: 220 90% 56%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 30 15% 25%;
-    --sidebar-accent-foreground: 40 30% 95%;
-    --sidebar-border: 30 10% 25%;
-    --sidebar-ring: 25 95% 50%;
+    --sidebar-accent: 220 20% 28%;
+    --sidebar-accent-foreground: 220 15% 95%;
+    --sidebar-border: 220 20% 28%;
+    --sidebar-ring: 220 90% 56%;
   }
 
   .dark {
