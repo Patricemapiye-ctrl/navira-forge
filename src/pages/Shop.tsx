@@ -250,7 +250,7 @@ const Shop = () => {
                 variant="outline"
                 size="sm"
               >
-                <Building className="h-4 w-4 mr-2" />
+                <Building className="h-3 w-3 mr-1.5" />
                 Contact
               </Button>
               <Button
