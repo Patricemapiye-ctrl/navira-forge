@@ -275,29 +275,20 @@ const Shop = () => {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredProducts.map(product => <Card key={product.id} className="bg-hardware-dark/50 border-primary/20 hover:border-primary/50 transition-all group overflow-hidden">
-              <div className="aspect-square bg-hardware-steel/20 relative overflow-hidden">
-                {product.image_url ? (
-                  <img 
-                    src={product.image_url} 
-                    alt={product.item_name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Package className="h-16 w-16 text-hardware-light/30" />
+          {filteredProducts.map(product => <Card key={product.id} className="bg-hardware-dark/50 border-primary/20 hover:border-primary/50 transition-all group">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <CardTitle className="text-white text-lg mb-1">{product.item_name}</CardTitle>
+                    <p className="text-sm text-hardware-light">{product.item_code}</p>
                   </div>
-                )}
-                <Badge variant="outline" className="absolute top-3 right-3 border-primary text-primary bg-background/80 backdrop-blur-sm">
-                  {product.category}
-                </Badge>
-              </div>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-white text-lg mb-1">{product.item_name}</CardTitle>
-                <p className="text-sm text-hardware-light">{product.item_code}</p>
+                  <Badge variant="outline" className="border-primary text-primary">
+                    {product.category}
+                  </Badge>
+                </div>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-hardware-light mb-4 min-h-[40px] line-clamp-2">
+                <p className="text-sm text-hardware-light mb-4 min-h-[40px]">
                   {product.description || "Quality hardware product"}
                 </p>
                 <div className="flex items-center justify-between mb-4">
