@@ -214,8 +214,9 @@ const Shop = () => {
             </div>
             <div className="flex items-center gap-4">
               <ThemeToggle />
-              <Button onClick={() => navigate("/company-info")} variant="outline" size="sm">BusinessDetails<Building className="h-3 w-3 mr-1.5" />
-                Contact
+              <Button onClick={() => navigate("/company-info")} variant="outline" size="sm">
+                <Building className="h-3 w-3 mr-1.5" />
+                Business details
               </Button>
               <Button onClick={() => navigate("/")} variant="outline">
                 <ArrowLeft className="h-4 w-4 mr-2" />
