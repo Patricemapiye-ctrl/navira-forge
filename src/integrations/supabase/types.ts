@@ -24,8 +24,11 @@ export type Database = {
           google_maps_url: string | null
           id: string
           landline: string | null
+          saturday_hours: string | null
+          sunday_hours: string | null
           updated_at: string | null
           updated_by: string | null
+          weekday_hours: string | null
         }
         Insert: {
           address?: string | null
@@ -36,8 +39,11 @@ export type Database = {
           google_maps_url?: string | null
           id?: string
           landline?: string | null
+          saturday_hours?: string | null
+          sunday_hours?: string | null
           updated_at?: string | null
           updated_by?: string | null
+          weekday_hours?: string | null
         }
         Update: {
           address?: string | null
@@ -48,8 +54,11 @@ export type Database = {
           google_maps_url?: string | null
           id?: string
           landline?: string | null
+          saturday_hours?: string | null
+          sunday_hours?: string | null
           updated_at?: string | null
           updated_by?: string | null
+          weekday_hours?: string | null
         }
         Relationships: []
       }
