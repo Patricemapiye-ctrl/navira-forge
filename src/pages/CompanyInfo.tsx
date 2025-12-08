@@ -16,6 +16,9 @@ interface CompanyData {
   city: string;
   country: string;
   google_maps_url: string;
+  weekday_hours: string;
+  saturday_hours: string;
+  sunday_hours: string;
 }
 
 const CompanyInfo = () => {
@@ -131,11 +134,11 @@ const CompanyInfo = () => {
                 <h3 className="font-semibold mb-4">Business Hours</h3>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <p>Monday - Friday:</p>
-                  <p className="font-medium">8:00 AM - 6:00 PM</p>
+                  <p className="font-medium">{companyData.weekday_hours || "8:00 AM - 6:00 PM"}</p>
                   <p>Saturday:</p>
-                  <p className="font-medium">8:00 AM - 4:00 PM</p>
+                  <p className="font-medium">{companyData.saturday_hours || "8:00 AM - 4:00 PM"}</p>
                   <p>Sunday:</p>
-                  <p className="font-medium">Closed</p>
+                  <p className="font-medium">{companyData.sunday_hours || "Closed"}</p>
                 </div>
               </div>
             </CardContent>

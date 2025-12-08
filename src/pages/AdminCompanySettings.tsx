@@ -18,6 +18,9 @@ interface CompanyData {
   city: string;
   country: string;
   google_maps_url: string;
+  weekday_hours: string;
+  saturday_hours: string;
+  sunday_hours: string;
 }
 
 const AdminCompanySettings = () => {
@@ -32,6 +35,9 @@ const AdminCompanySettings = () => {
     city: "",
     country: "",
     google_maps_url: "",
+    weekday_hours: "8:00 AM - 6:00 PM",
+    saturday_hours: "8:00 AM - 4:00 PM",
+    sunday_hours: "Closed",
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -94,6 +100,9 @@ const AdminCompanySettings = () => {
         city: companyData.city,
         country: companyData.country,
         google_maps_url: companyData.google_maps_url,
+        weekday_hours: companyData.weekday_hours,
+        saturday_hours: companyData.saturday_hours,
+        sunday_hours: companyData.sunday_hours,
         updated_at: new Date().toISOString(),
         updated_by: session?.user.id,
       };
@@ -225,6 +234,39 @@ const AdminCompanySettings = () => {
                   onChange={(e) => handleChange("google_maps_url", e.target.value)}
                   placeholder="https://maps.google.com/..."
                 />
+              </div>
+
+              <div className="pt-4 border-t border-border">
+                <h3 className="font-semibold mb-4">Business Hours</h3>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="weekday_hours">Monday - Friday</Label>
+                    <Input
+                      id="weekday_hours"
+                      value={companyData.weekday_hours}
+                      onChange={(e) => handleChange("weekday_hours", e.target.value)}
+                      placeholder="8:00 AM - 6:00 PM"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="saturday_hours">Saturday</Label>
+                    <Input
+                      id="saturday_hours"
+                      value={companyData.saturday_hours}
+                      onChange={(e) => handleChange("saturday_hours", e.target.value)}
+                      placeholder="8:00 AM - 4:00 PM"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="sunday_hours">Sunday</Label>
+                    <Input
+                      id="sunday_hours"
+                      value={companyData.sunday_hours}
+                      onChange={(e) => handleChange("sunday_hours", e.target.value)}
+                      placeholder="Closed"
+                    />
+                  </div>
+                </div>
               </div>
 
               <Button onClick={handleSave} disabled={saving} className="w-full">
